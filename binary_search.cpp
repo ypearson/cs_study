@@ -1,38 +1,39 @@
-#include <array>
 #include <cstdio>
+#include <array>
 
-std::array arr{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+using std::size_t;
+template<typename T, std::size_t N>
+bool binary_search(const std::array<T,N> &arr, T value) {
 
-template <typename T, std::size_t N>
-bool binary_search(const std::array<T, N> &arr, T value) {
-  int left{};
-  int right = arr.size() - 1;
-  int mid = arr.size() >> 1;
   int cnt{};
+  int low{};
+  int high = arr.size()-1;
 
-  while (left <= right) {
-    if (arr[mid] == value) {
-      printf("index = %d\n", mid);
+  while(low <= high) {
+
+    int mid = (high+low) >> 1;
+    printf("mid=%d\n", mid);
+    if(value == arr[mid]) {
+      printf("found @ mid = %d\n",mid);
       return true;
-    } else if (value > arr[mid]) {
-      left = mid + 1;
-      mid = (left + right) >> 1;
-      printf("%d %d %d\n", left, right, mid);
-    } else {
-      right = mid + 1;
-      mid = (left + mid) >> 1;
-      printf("%d %d %d\n", left, right, mid);
     }
-    if (++cnt > 5) break;
+    else if(arr[mid] < value) {
+      low = mid+1;
+      printf("L%d H%d M%d\n",low,high,mid);
+    }
+    else {
+      high = mid-1;
+      printf("L%d H%d M%d\n",low,high,mid);
+    }
+    if(++cnt>7)
+      break;
   }
-
   return false;
 }
 
 int main() {
-  bool answer = binary_search(arr, 12);
-
-  printf("answer %s\n", answer ? "true" : "false");
-
-  return 0;
+  bool answer{};
+  std::array<double,12> arr1{0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0,11.0};
+  answer = binary_search(arr1, 11.0);
+  printf("answer = %s\n\n", answer?"true":"false");
 }
